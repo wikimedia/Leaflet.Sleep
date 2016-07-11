@@ -1,5 +1,8 @@
 # Leaflet.Sleep
 
+> This is a fork of [CliffCloud/Leaflet.Sleep](https://github.com/CliffCloud/Leaflet.Sleep).
+It is a lighter version of the plugin, optimized for Mediawiki use case.
+
 Leaflet's stock maps are event-greedy and interfere with scrolling.
 
 `Leaflet.Sleep` is an interaction manager, helping your
