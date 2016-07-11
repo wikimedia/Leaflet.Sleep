@@ -3,58 +3,6 @@
  */
 
 /*
- * Default Button (touch devices only)
- */
-
-L.Control.SleepMapControl = L.Control.extend({
-
-  initialize: function(opts){
-    L.setOptions(this,opts);
-  },
-
-  options: {
-    position: 'topright',
-    prompt: 'disable map',
-    styles: {
-      'backgroundColor': 'white',
-      'padding': '5px',
-      'border': '2px solid gray'
-    }
-  },
-
-  buildContainer: function(){
-    var self = this;
-    var container = L.DomUtil.create('p', 'sleep-button');
-    var boundEvent = this._nonBoundEvent.bind(this);
-    container.appendChild( document.createTextNode( this.options.prompt ));
-    L.DomEvent.addListener(container, 'click', boundEvent);
-    L.DomEvent.addListener(container, 'touchstart', boundEvent);
-
-    Object.keys(this.options.styles).map(function(key) {
-      container.style[key] = self.options.styles[key];
-    });
-
-    return (this._container = container);
-  },
-
-  onAdd: function () {
-    return this._container || this.buildContainer();
-  },
-
-  _nonBoundEvent: function(e) {
-    L.DomEvent.stop(e);
-    if (this._map) this._map.sleep._sleepMap();
-    return false;
-  }
-
-});
-
-L.Control.sleepMapControl = function(){
-  return new L.Control.SleepMapControl();
-};
-
-
-/*
  * The Sleep Handler
  */
 
@@ -65,8 +13,7 @@ L.Map.mergeOptions({
   wakeMessageTouch: 'Touch to Wake',
   sleepNote: true,
   hoverToWake: true,
-  sleepOpacity:.7,
-  sleepButton: L.Control.sleepMapControl
+  sleepOpacity: 0.7
 });
 
 L.Map.Sleep = L.Handler.extend({
@@ -76,20 +23,6 @@ L.Map.Sleep = L.Handler.extend({
     this.sleepNote = L.DomUtil.create('p', 'sleep-note', this._map._container);
     this._enterTimeout = null;
     this._exitTimeout = null;
-
-    /*
-     * If the device has only a touchscreen we will never get
-     * a mouseout event, so we add an extra button to put the map
-     * back to sleep manually.
-     *
-     * a custom control/button can be provided by the user
-     * with the map's `sleepButton` option
-     */
-    this._sleepButton = this._map.options.sleepButton();
-
-    if (this._map.tap) {
-      this._map.addControl(this._sleepButton);
-    }
 
     var mapStyle = this._map._container.style;
     mapStyle.WebkitTransition += 'opacity .5s';
@@ -160,7 +93,6 @@ L.Map.Sleep = L.Handler.extend({
       this._map.touchZoom.enable();
       this._map.dragging.enable();
       this._map.tap.enable();
-      this._map.addControl(this._sleepButton);
     }
     L.DomUtil.setOpacity( this._map._container, 1);
     this.sleepNote.style.opacity = 0;
@@ -175,7 +107,6 @@ L.Map.Sleep = L.Handler.extend({
       this._map.touchZoom.disable();
       this._map.dragging.disable();
       this._map.tap.disable();
-      this._map.removeControl(this._sleepButton);
     }
 
     L.DomUtil.setOpacity( this._map._container, this._map.options.sleepOpacity);
