@@ -45,9 +45,9 @@ L.Map.Sleep = L.Handler.extend({
   _wakeMap: function (e) {
     this._stopWaiting();
     this._map.scrollWheelZoom.enable();
+    this._map.dragging.enable();
     if (this._map.tap) {
       this._map.touchZoom.enable();
-      this._map.dragging.enable();
       this._map.tap.enable();
     }
     L.DomUtil.setOpacity( this._map._container, 1);
@@ -57,10 +57,10 @@ L.Map.Sleep = L.Handler.extend({
   _sleepMap: function () {
     this._stopWaiting();
     this._map.scrollWheelZoom.disable();
+    this._map.dragging.disable();
 
     if (this._map.tap) {
       this._map.touchZoom.disable();
-      this._map.dragging.disable();
       this._map.tap.disable();
     }
 
@@ -91,8 +91,7 @@ L.Map.Sleep = L.Handler.extend({
 
   _addSleepingListeners: function(){
     this._map.once('mouseover', this._wakePending, this);
-    this._map.tap &&
-      this._map.once('click', this._wakeMap, this);
+    this._map.once('click', this._wakeMap, this);
   },
 
   _addAwakeListeners: function(){
@@ -103,8 +102,7 @@ L.Map.Sleep = L.Handler.extend({
     this._map.options.hoverToWake &&
       this._map.off('mouseover', this._wakePending, this);
     this._map.off('mousedown', this._wakeMap, this);
-    this._map.tap &&
-      this._map.off('click', this._wakeMap, this);
+    this._map.off('click', this._wakeMap, this);
   },
 
   _removeAwakeListeners: function(){
