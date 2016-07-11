@@ -10,8 +10,6 @@ L.Map.mergeOptions({
   sleep: true,
   sleepTime: 750,
   wakeTime: 750,
-  wakeMessageTouch: 'Touch to Wake',
-  sleepNote: true,
   hoverToWake: true,
   sleepOpacity: 0.7
 });
@@ -20,7 +18,6 @@ L.Map.Sleep = L.Handler.extend({
 
   addHooks: function () {
     var self = this;
-    this.sleepNote = L.DomUtil.create('p', 'sleep-note', this._map._container);
     this._enterTimeout = null;
     this._exitTimeout = null;
 
@@ -28,7 +25,6 @@ L.Map.Sleep = L.Handler.extend({
     mapStyle.WebkitTransition += 'opacity .5s';
     mapStyle.MozTransition += 'opacity .5s';
 
-    this._setSleepNoteStyle();
     this._sleepMap();
   },
 
@@ -42,48 +38,8 @@ L.Map.Sleep = L.Handler.extend({
       this._map.tap.enable();
     }
     L.DomUtil.setOpacity( this._map._container, 1);
-    L.DomUtil.setOpacity( this.sleepNote, 0);
     this._removeSleepingListeners();
     this._removeAwakeListeners();
-  },
-
-  _setSleepNoteStyle: function() {
-    var noteString = '';
-    var style = this.sleepNote.style;
-
-    if(this._map.tap) {
-      noteString = this._map.options.wakeMessageTouch;
-    } else if (this._map.options.wakeMessage) {
-      noteString = this._map.options.wakeMessage;
-    } else if (this._map.options.hoverToWake) {
-      noteString = 'click or hover to wake';
-    } else {
-      noteString = 'click to wake';
-    }
-
-    if( this._map.options.sleepNote ){
-      this.sleepNote.appendChild(document.createTextNode( noteString ));
-      style.pointerEvents = 'none';
-      style.maxWidth = '150px';
-      style.transitionDuration = '.2s';
-      style.zIndex = 5000;
-      style.opacity = '.6';
-      style.margin = 'auto';
-      style.textAlign = 'center';
-      style.borderRadius = '4px';
-      style.top = '50%';
-      style.position = 'relative';
-      style.padding = '5px';
-      style.border = 'solid 2px black';
-      style.background = 'white';
-
-      if(this._map.options.sleepNoteStyle) {
-        var noteStyleOverrides = this._map.options.sleepNoteStyle;
-        Object.keys(noteStyleOverrides).map(function(key) {
-          style[key] = noteStyleOverrides[key];
-        });
-      }
-    }
   },
 
   _wakeMap: function (e) {
@@ -95,7 +51,6 @@ L.Map.Sleep = L.Handler.extend({
       this._map.tap.enable();
     }
     L.DomUtil.setOpacity( this._map._container, 1);
-    this.sleepNote.style.opacity = 0;
     this._addAwakeListeners();
   },
 
@@ -110,7 +65,6 @@ L.Map.Sleep = L.Handler.extend({
     }
 
     L.DomUtil.setOpacity( this._map._container, this._map.options.sleepOpacity);
-    this.sleepNote.style.opacity = .4;
     this._addSleepingListeners();
   },
 
