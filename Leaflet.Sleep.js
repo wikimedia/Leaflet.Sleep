@@ -121,5 +121,3 @@ L.Map.Sleep = L.Handler.extend({
     this._exitTimeout = null;
   }
 });
-
-L.Map.addInitHook('addHandler', 'sleep', L.Map.Sleep);
