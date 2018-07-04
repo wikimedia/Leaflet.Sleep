@@ -1,5 +1,5 @@
 {
-  "name": "leaflet-sleep",
+  "name": "@wikimedia/leaflet-sleep",
   "version": "0.5.1",
   "main": "Leaflet.Sleep.js",
   "description": "Leaflet plugin preventing unwanted scroll capturing",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CliffCloud/Leaflet.Sleep.git"
+    "url": "git+https://github.com/wikimedia/Leaflet.Sleep.git"
   },
   "author": "rocks.in.the.cloud+leafletsleep@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CliffCloud/Leaflet.Sleep/issues"
+    "url": "https://github.com/wikimedia/Leaflet.Sleep/issues"
   },
   "homepage": "http://cliffcloud.github.io/Leaflet.Sleep",
   "readmeFilename": "README.md"
